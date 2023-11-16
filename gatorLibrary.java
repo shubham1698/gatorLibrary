@@ -67,7 +67,7 @@ public class gatorLibrary {
             reader.close();
             writer.close();
         } catch (Exception e) {
-            System.out.println("--->" + e.getMessage());
+
         }
 
     }
@@ -123,9 +123,7 @@ public class gatorLibrary {
                 String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
                         dataStringTrimmed.length() - 1);
                 String parseString[] = inputData.split(",", 3);
-                System.out.print(parseString[0]);
-                System.out.print(parseString[1]);
-                System.out.print(parseString[2]);
+
                 gatorLibServices.performBorrowBookAction(
                         Integer.parseInt(parseString[0].trim()),
                         Integer.parseInt(parseString[1].trim()),

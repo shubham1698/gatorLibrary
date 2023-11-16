@@ -60,6 +60,7 @@ public class RedBlackMethod {
         // is found
         if (head == null || head.getBook().getBookId() == bookId) {
             String status = "";
+            System.out.println("PatronID-->" + patronID + " " + head.getBook().isBookAvailabilityStatus());
             if (head.getBook().isBookAvailabilityStatus()) {
                 // Book is available, perform borrow operation
                 head.getBook().setBookAvailabilityStatus(false);
@@ -150,32 +151,38 @@ public class RedBlackMethod {
      * @param head        The root node of the Red-Black Tree or its subtree.
      */
     public void insertInRedBlackTree(RedBlackNode newBookNode, RedBlackNode head) {
-        RedBlackNode parent = null;
-
-        // Traverse the tree to the left or right depending on the key
-        while (head != null) {
-            parent = head;
-            if (newBookNode.getBook().getBookId() < head.getBook().getBookId()) {
-                head = head.getLeftRedBlackNode();
-            } else if (newBookNode.getBook().getBookId() > head.getBook().getBookId()) {
-                head = head.getRightRedBlackNode();
-            } else {
-                throw new IllegalArgumentException("BST already contains a node with key ");
+        try {
+            RedBlackNode parent = null;
+            System.out.println(newBookNode.getBook().toString());
+            //System.out.println(head.getBook().toString());
+            // Traverse the tree to the left or right depending on the key
+            while (head != null) {
+                parent = head;
+                if (newBookNode.getBook().getBookId() < head.getBook().getBookId()) {
+                    head = head.getLeftRedBlackNode();
+                } else if (newBookNode.getBook().getBookId() > head.getBook().getBookId()) {
+                    head = head.getRightRedBlackNode();
+                } else {
+                    throw new IllegalArgumentException("BST already contains a node with key ");
+                }
             }
-        }
 
-        // Insert new node
-        if (parent == null) {
-            // If the tree is empty, set the new node as the root
-            headRedBlackNode = newBookNode;
-        } else if (newBookNode.getBook().getBookId() < parent.getBook().getBookId()) {
-            parent.setLeftRedBlackNode(newBookNode);
-        } else {
-            parent.setRightRedBlackNode(newBookNode);
+            // Insert new node
+            if (parent == null) {
+                // If the tree is empty, set the new node as the root
+                headRedBlackNode = newBookNode;
+                
+            } else if (newBookNode.getBook().getBookId() < parent.getBook().getBookId()) {
+                parent.setLeftRedBlackNode(newBookNode);
+            } else {
+                parent.setRightRedBlackNode(newBookNode);
+            }
+            newBookNode.setParentRedBlackNode(parent);
+            
+            fixRedBlackNodePropertiesAfterInsert(newBookNode);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        newBookNode.setParentRedBlackNode(parent);
-
-        fixRedBlackNodePropertiesAfterInsert(newBookNode);
     }
 
     /**
@@ -416,7 +423,7 @@ public class RedBlackMethod {
         // In this variable, we'll store the node at which we're going to start to fix
         // the R-B
         // properties after deleting a node.
-
+        
         String returnStatusMessage = node.getBook().getBookId() + " is no longer available.";
         String returnSecondHalfString = "";
         if (!node.getBook().getBookReservationQueue().waitListHeap.isEmpty()) {

@@ -53,13 +53,21 @@ public class gatorLibrary {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             String line;
             while ((line = reader.readLine()) != null) {
-                String libraryActionToPerform = line.substring(0, line.indexOf('('));
-                libraryActionPerformer(libraryActionToPerform, line);
+                if (!line.isBlank()) {
+                    String libraryActionToPerform = line.substring(0, line.indexOf('('));
+                    if (LibraryActionConstant.QUIT.equals(libraryActionToPerform.trim())) {
+                        gatorLibServices.performQuitAction();
+                        break;
+                    } else {
+                        libraryActionPerformer(libraryActionToPerform.trim(), line);
+                    }
+                }
             }
 
             reader.close();
             writer.close();
         } catch (Exception e) {
+            System.out.println("--->" + e.getMessage());
         }
 
     }
@@ -75,8 +83,9 @@ public class gatorLibrary {
         switch (libraryAction) {
             // Handle the PRINT_BOOK action
             case LibraryActionConstant.PRINT_BOOK: {
-
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 gatorLibServices.performPrintBookAction(Integer.parseInt(inputData.trim()));
 
             }
@@ -84,7 +93,9 @@ public class gatorLibrary {
 
             // Handle the PRINT_BOOKS action
             case LibraryActionConstant.PRINT_BOOKS: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 String parseString[] = inputData.split(",", 2);
                 gatorLibServices.performPrintBooksAction(Integer.parseInt(parseString[0].trim()),
                         Integer.parseInt(parseString[1].trim()));
@@ -94,20 +105,27 @@ public class gatorLibrary {
 
             // Handle the INSERT_BOOK action
             case LibraryActionConstant.INSERT_BOOK: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataString.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 String parseString[] = inputData.split(",", 4);
-                // insertBookAction(parseString[0],parseString[1],parseString[2],parseString[3]);
+
                 BookNode newBook = new BookNode(Integer.parseInt(parseString[0].trim()), parseString[1].trim(),
                         parseString[2].trim(),
-                        parseString[3].trim().equals("\"Yes\"") ? true : false);
+                        parseString[3].trim().equalsIgnoreCase("\"Yes\"") ? true : false);
+
                 gatorLibServices.performInsertBookAction(newBook);
             }
                 break;
             // Handle the BORROW_BOOK action
             case LibraryActionConstant.BORROW_BOOK: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 String parseString[] = inputData.split(",", 3);
-
+                System.out.print(parseString[0]);
+                System.out.print(parseString[1]);
+                System.out.print(parseString[2]);
                 gatorLibServices.performBorrowBookAction(
                         Integer.parseInt(parseString[0].trim()),
                         Integer.parseInt(parseString[1].trim()),
@@ -118,9 +136,10 @@ public class gatorLibrary {
                 break;
             // Handle the RETURN_BOOK action
             case LibraryActionConstant.RETURN_BOOK: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 String parseString[] = inputData.split(",", 2);
-                // returnBookAction(parseString[0],parseString[1]);
 
                 gatorLibServices.performReturnBookAction(Integer.parseInt(parseString[0].trim()),
                         Integer.parseInt(parseString[1].trim()));
@@ -129,23 +148,21 @@ public class gatorLibrary {
 
             // Handle the DELETE_BOOK action
             case LibraryActionConstant.DELETE_BOOK: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 gatorLibServices.performDeleteBookAction(Integer.parseInt(inputData.trim()));
             }
                 break;
 
             // Handle the FIND_CLOSEST_BOOK action
             case LibraryActionConstant.FIND_CLOSEST_BOOK: {
-                String inputData = dataString.substring(dataString.indexOf('(') + 1, dataString.length() - 1);
+                String dataStringTrimmed = dataString.trim();
+                String inputData = dataStringTrimmed.substring(dataStringTrimmed.indexOf('(') + 1,
+                        dataStringTrimmed.length() - 1);
                 gatorLibServices.performFindClosestBookSearch(Integer.parseInt(inputData.trim()));
             }
                 break;
-
-            case LibraryActionConstant.QUIT: {
-                gatorLibServices.performQuitAction();
-            }
-                break;
-
             case LibraryActionConstant.FIND_COLOUR_FLIP_COUNT: {
                 gatorLibServices.performColourFlipCountAction();
             }

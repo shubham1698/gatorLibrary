@@ -423,7 +423,7 @@ public class RedBlackMethod {
         // the R-B
         // properties after deleting a node.
         
-        String returnStatusMessage = node.getBook().getBookId() + " is no longer available.";
+        String returnStatusMessage = "Book "+node.getBook().getBookId() + " is no longer available.";
         String returnSecondHalfString = "";
         if (!node.getBook().getBookReservationQueue().waitListHeap.isEmpty()) {
             String waitingPatronID = "";

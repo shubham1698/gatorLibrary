@@ -37,7 +37,7 @@ public class GatorLibServices {
         // Implementation for printing book action
         try {
             RedBlackNode newBookRBNode = new RedBlackNode(newBookNode);
-                        rb.insertInRedBlackTree(newBookRBNode, rb.getHeadRedBlackNode());
+            rb.insertInRedBlackTree(newBookRBNode, rb.getHeadRedBlackNode());
             return;
         } catch (Exception e) {
             // TODO: handle exception
@@ -65,8 +65,12 @@ public class GatorLibServices {
                 ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
                         .getBookReservationList();
                 String reservation = "";
-                for (BookWaitList element : reservationList) {
-                    reservation = reservation + " " + element.getPatronId() + ",";
+                for (int i = 0; i < reservationList.size(); i++) {
+                    if (i != reservationList.size() - 1) {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + ",";
+                    } else {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + " ";
+                    }
                 }
                 writer.write("Reservations = [" + reservation + "]\n");
                 writer.write("\n");
@@ -93,13 +97,13 @@ public class GatorLibServices {
     public void performBorrowBookAction(int patronID, int bookID, int priorityNumber) {
         // Implementation for borrowing book action
         try {
-            
+
             writer.write(
                     rb.checkForBorrowInRedBlackTree(rb.getHeadRedBlackNode(), bookID, patronID, priorityNumber) + "\n");
             writer.write("\n");
-                    } catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
-                    }
+        }
 
     }
 
@@ -137,7 +141,7 @@ public class GatorLibServices {
         // Implementation for deleting book action
         try {
 
-            writer.write(rb.deleteRedBlackNode(bookID, rb.getHeadRedBlackNode()) + "\n");
+            writer.write(rb.deleteFromRedBlackTree(bookID, rb.getHeadRedBlackNode()) + "\n");
             writer.write("\n");
         } catch (Exception e) {
             // TODO: handle exception
@@ -169,8 +173,12 @@ public class GatorLibServices {
                 ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
                         .getBookReservationList();
                 String reservation = "";
-                for (BookWaitList element : reservationList) {
-                    reservation = reservation + " " + element.getPatronId() + ",";
+                for (int i = 0; i < reservationList.size(); i++) {
+                    if (i != reservationList.size() - 1) {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + ",";
+                    } else {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + " ";
+                    }
                 }
                 writer.write("Reservations = [" + reservation + "]\n");
                 writer.write("\n");
@@ -232,8 +240,12 @@ public class GatorLibServices {
                 ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
                         .getBookReservationList();
                 String reservation = "";
-                for (BookWaitList element : reservationList) {
-                    reservation = reservation + " " + element.getPatronId() + ",";
+                for (int i = 0; i < reservationList.size(); i++) {
+                    if (i != reservationList.size() - 1) {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + ",";
+                    } else {
+                        reservation = reservation + " " + reservationList.get(i).getPatronId() + " ";
+                    }
                 }
                 writer.write("Reservations = [" + reservation + "]\n");
                 writer.write("\n");

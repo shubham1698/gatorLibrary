@@ -5,140 +5,126 @@ Availability = Yes
 BorrowedBy = 
 Reservations = []
 
-Book 48 Borrowed by Patron 120
+Book 5 Reserved by Patron 101
 
-Book 101 Borrowed by Patron 132
+Book 3 Reserved by Patron 101
 
-Book 48 Reserved by Patron 144
+12 is no longer available.
 
-Book 48 Reserved by Patron 140
-
-Book 48 Reserved by Patron 142
-
-Book 12 Borrowed by Patron 138
-
-Book 12 Reserved by Patron 150
-
-Book 12 Reserved by Patron 162
-
-Book 48 Return by Patron 120
-
-Book 48 Alloted to Patron 144
-
-BookID = 6
-Title = "Database Management Systems"
-Author = "Raghu Ramakrishnan"
-Availability = Yes
+BookID = 3
+Title = "The Great Gatsby"
+Author = "Mark Johnson"
+Availability = No
 BorrowedBy = 
+Reservations = [ 101,]
+
+BookID = 5
+Title = "The Secret Garden"
+Author = "Jane Smith"
+Availability = No
+BorrowedBy = 
+Reservations = [ 101,]
+
+3 is no longer available.Reservations made by Patrons 101 have been cancelled!
+
+5 is no longer available.Reservations made by Patrons 101 have been cancelled!
+
+Book 5 not found in the library
+
+Book 22 Borrowed by Patron 104
+
+Book 22 Reserved by Patron 171
+
+Book 22 Reserved by Patron 103
+
+Color Flip Count: 18
+
+Book 94 Borrowed by Patron 171
+
+Book 22 Return by Patron 104
+
+Book 22 Alloted to Patron 171
+
+Book 50 Borrowed by Patron 132
+
+Book 10 Borrowed by Patron 103
+
+Book 72 Borrowed by Patron 109
+
+Book 50 Reserved by Patron 101
+
+94 is no longer available.
+
+Book 22 Reserved by Patron 105
+
+BookID = 10
+Title = "The Hobbit"
+Author = "J.R.R. Tolkien"
+Availability = No
+BorrowedBy = 103
 Reservations = []
 
-BookID = 12
-Title = "Artificial Intelligence: A Modern Approach"
-Author = "Stuart Russell"
+BookID = 22
+Title = "The Alchemist"
+Author = "Paul Coelho"
 Availability = No
-BorrowedBy = 138
-Reservations = [ 150, 162,]
+BorrowedBy = 171
+Reservations = [ 103, 105,]
 
-12 is no longer available.Reservations made by Patrons 150162 have been cancelled!
-
-Color Flip Count: 10
-
-Book 73 Borrowed by Patron 111
-
-Book 73 Reserved by Patron 52
-
-Book 25 Borrowed by Patron 153
-
-BookID = 25
-Title = "Computer Networks"
-Author = "Andrew S. Tanenbaum"
-Availability = No
-BorrowedBy = 153
+BookID = 28
+Title = "Lord of the Flies"
+Author = "William Golding"
+Availability = Yes
+BorrowedBy = 
 Reservations = []
 
 BookID = 48
 Title = "Data Structures and Algorithms"
 Author = "Sartaj Sahni"
-Availability = No
-BorrowedBy = 144
-Reservations = [ 142, 140,]
+Availability = Yes
+BorrowedBy = 
+Reservations = []
 
-BookID = 73
-Title = "Introduction to the Theory of Computation"
-Author = "Michael Sipser"
-Availability = No
-BorrowedBy = 111
-Reservations = [ 52,]
-
-BookID = 101
-Title = "Introduction to Algorithms"
-Author = "Thomas H. Cormen"
+BookID = 50
+Title = "The Catcher in the Rye"
+Author = "Michael Brown"
 Availability = No
 BorrowedBy = 132
-Reservations = []
+Reservations = [ 101,]
 
-BookID = 115
-Title = "Operating Systems: Internals and Design Principles"
-Author = "William Stallings"
-Availability = Yes
-BorrowedBy = 
-Reservations = []
-
-BookID = 125
-Title = "Computer Organization and Design"
-Author = "David A. Patterson"
-Availability = Yes
-BorrowedBy = 
-Reservations = []
-
-BookID = 132
-Title = "Operating System Concepts"
-Author = "Abraham Silberschatz"
-Availability = Yes
-BorrowedBy = 
-Reservations = []
-
-Book 25 Reserved by Patron 171
-
-Book 132 Borrowed by Patron 2
-
-BookID = 48
-Title = "Data Structures and Algorithms"
-Author = "Sartaj Sahni"
+BookID = 72
+Title = "Brave New World"
+Author = "Aldous Huxley"
 Availability = No
-BorrowedBy = 144
-Reservations = [ 142, 140,]
-
-Book 101 Reserved by Patron 18
-
-Book 210 Borrowed by Patron 210
-
-Book 73 Reserved by Patron 43
-
-BookID = 210
-Title = "Machine Learning: A Probabilistic Perspective"
-Author = "Kevin P. Murphy"
-Availability = No
-BorrowedBy = 210
+BorrowedBy = 109
 Reservations = []
 
-Book 210 Reserved by Patron 34
+BookID = 28
+Title = "Lord of the Flies"
+Author = "William Golding"
+Availability = Yes
+BorrowedBy = 
+Reservations = []
 
-Color Flip Count: 25
+Book 22 Return by Patron 171
 
-125 is no longer available.
+Book 22 Alloted to Patron 103
 
-115 is no longer available.
+Book 28 Borrowed by Patron 171
 
-210 is no longer available.Reservations made by Patrons 34 have been cancelled!
+50 is no longer available.Reservations made by Patrons 101 have been cancelled!
 
-Color Flip Count: 25
+Color Flip Count: 21
 
-25 is no longer available.Reservations made by Patrons 171 have been cancelled!
+Book 22 Reserved by Patron 107
 
-80 is no longer available.
+Book 10 Return by Patron 103
 
-Color Flip Count: 33
+Book 10 Borrowed by Patron 121
+
+10 is no longer available.
+
+Color Flip Count: 28
 
 Program Terminated!!
 

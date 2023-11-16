@@ -27,7 +27,8 @@ public class RedBlackMethod {
      *         null if not found.
      */
     public RedBlackNode searchWithInRedBlackTree(RedBlackNode head, int bookId) {
-        // Base case: if the current node is null, or the book with the specified bookId
+        // Base condition: if the current node is null, or the book with the specified
+        // bookId
         // is found
         if (head == null || head.getBook().getBookId() == bookId) {
             return head;
@@ -56,7 +57,8 @@ public class RedBlackMethod {
      *         reservation queue.
      */
     public String checkForBorrowInRedBlackTree(RedBlackNode head, int bookId, int patronID, int priorityNumber) {
-        // Base case: if the current node is null, or the book with the specified bookId
+        // Base condition: if the current node is null, or the book with the specified
+        // bookId
         // is found
         if (head == null || head.getBook().getBookId() == bookId) {
             String status = "";
@@ -75,7 +77,7 @@ public class RedBlackMethod {
             return status;
         }
 
-        // Recursive case: search in the left subtree if the bookId is smaller,
+        // Recursive : search in the left subtree if the bookId is smaller,
         // or search in the right subtree if the bookId is larger
         if (head.getBook().getBookId() > bookId)
             return checkForBorrowInRedBlackTree(head.getLeftRedBlackNode(), bookId, patronID, priorityNumber);
@@ -112,7 +114,8 @@ public class RedBlackMethod {
      * @return A status message indicating the result of the return action.
      */
     public String returnBookActionInRedBlackTree(RedBlackNode head, int bookId, int patronID) {
-        // Base case: if the current node is null, or the book with the specified bookId
+        // Base condition: if the current node is null, or the book with the specified
+        // bookId
         // is found
         if (head == null || head.getBook().getBookId() == bookId) {
             String status = "";
@@ -170,15 +173,15 @@ public class RedBlackMethod {
             if (parent == null) {
                 // If the tree is empty, set the new node as the root
                 headRedBlackNode = newBookNode;
-                
+
             } else if (newBookNode.getBook().getBookId() < parent.getBook().getBookId()) {
                 parent.setLeftRedBlackNode(newBookNode);
             } else {
                 parent.setRightRedBlackNode(newBookNode);
             }
             newBookNode.setParentRedBlackNode(parent);
-            
-            fixRedBlackNodePropertiesAfterInsert(newBookNode);
+
+            restoreRedBlackTreePropertiesAfterInsert(newBookNode);
         } catch (Exception e) {
 
         }
@@ -194,16 +197,16 @@ public class RedBlackMethod {
      * @throws IllegalArgumentException If there is an attempt to violate Red-Black
      *                                  Tree properties.
      */
-    private void fixRedBlackNodePropertiesAfterInsert(RedBlackNode node) {
+    private void restoreRedBlackTreePropertiesAfterInsert(RedBlackNode node) {
         RedBlackNode parent = node.getParentRedBlackNode();
 
-        // Case 1: Parent is null, we've reached the root, the end of the recursion
+        // Case 1: Parent is null, we've reached the root, end the recursion
         if (parent == null) {
             redBlackTreeColourFilpTracker(node, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             return;
         }
 
-        // Parent is black --> nothing to do
+        // If the parent is black, nothing needs to be done
         if (parent.getRedBlackNodeColor() == LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE) {
             return;
         }
@@ -211,37 +214,24 @@ public class RedBlackMethod {
         // From here on, parent is red
         RedBlackNode grandparent = parent.getParentRedBlackNode();
 
-        // Case 2:
-        // Not having a grandparent means that parent is the root. If we enforce black
-        // roots
-        // (rule 2), grandparent will never be null, and the following if-then block can
-        // be
-        // removed.
+        // Case 2: If there is no grandparent, set the root to black and end
         if (grandparent == null) {
-            // As this method is only called on red nodes (either on newly inserted ones -
-            // or -
-            // recursively on red grandparents), all we have to do is to recolor the root
-            // black.
-            // parent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(parent, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             return;
         }
 
         // Get the uncle (may be null/nil, in which case its color is BLACK)
-        RedBlackNode uncle = getRedBlackUncleNode(parent);
+        RedBlackNode uncle = getUncleRedBlackNode(parent);
 
         // Case 3: Uncle is red -> recolor parent, grandparent and uncle
         if (uncle != null && uncle.getRedBlackNodeColor() == LibraryActionConstant.RED_BLACK_RED_COLOR_NODE) {
-            // parent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(parent, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
-            // grandparent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(grandparent, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
-            // uncle.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(uncle, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
 
             // Call recursively for grandparent, which is now red.
             // It might be root or have a red parent, in which case we need to fix more...
-            fixRedBlackNodePropertiesAfterInsert(grandparent);
+            restoreRedBlackTreePropertiesAfterInsert(grandparent);
         }
 
         // Parent is left child of grandparent
@@ -252,7 +242,6 @@ public class RedBlackMethod {
                 rotateRedBlackTreeToLeft(parent);
 
                 // Let "parent" point to the new root node of the rotated sub-tree.
-                // It will be recolored in the next step, which we're going to fall-through to.
                 parent = node;
             }
 
@@ -261,12 +250,9 @@ public class RedBlackMethod {
             rotateRedBlackTeeToRight(grandparent);
 
             // Recolor original parent and grandparent
-            // parent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(parent, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
 
-            // grandparent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(grandparent, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
-
         }
 
         // Parent is right child of grandparent
@@ -277,7 +263,6 @@ public class RedBlackMethod {
                 rotateRedBlackTeeToRight(parent);
 
                 // Let "parent" point to the new root node of the rotated sub-tree.
-                // It will be recolored in the next step, which we're going to fall-through to.
                 parent = node;
             }
 
@@ -286,9 +271,7 @@ public class RedBlackMethod {
             rotateRedBlackTreeToLeft(grandparent);
 
             // Recolor original parent and grandparent
-            // parent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(parent, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
-            // grandparent.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(grandparent, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
         }
     }
@@ -315,7 +298,7 @@ public class RedBlackMethod {
         leftChild.setRightRedBlackNode(node);
         node.setParentRedBlackNode(leftChild);
 
-        replaceParentsChild(parent, node, leftChild);
+        swapParentRedBlackNodesChild(parent, node, leftChild);
     }
 
     /**
@@ -340,7 +323,7 @@ public class RedBlackMethod {
         rightChild.setLeftRedBlackNode(node);
         node.setParentRedBlackNode(rightChild);
 
-        replaceParentsChild(parent, node, rightChild);
+        swapParentRedBlackNodesChild(parent, node, rightChild);
     }
 
     /**
@@ -353,7 +336,7 @@ public class RedBlackMethod {
      * @throws IllegalStateException If the provided node is not a child of its
      *                               parent.
      */
-    private void replaceParentsChild(RedBlackNode parent, RedBlackNode oldChild, RedBlackNode newChild) {
+    private void swapParentRedBlackNodesChild(RedBlackNode parent, RedBlackNode oldChild, RedBlackNode newChild) {
         if (parent == null) {
             headRedBlackNode = newChild;
         } else if (parent.getLeftRedBlackNode() == oldChild) {
@@ -378,7 +361,7 @@ public class RedBlackMethod {
      * @throws IllegalStateException If the provided parent node is not a child of
      *                               its grandparent.
      */
-    private RedBlackNode getRedBlackUncleNode(RedBlackNode parent) {
+    private RedBlackNode getUncleRedBlackNode(RedBlackNode parent) {
         RedBlackNode grandparent = parent.getParentRedBlackNode();
         if (grandparent.getLeftRedBlackNode() == parent) {
             return grandparent.getRightRedBlackNode();
@@ -399,7 +382,7 @@ public class RedBlackMethod {
      * @param head   The head node of the Red-Black Tree.
      * @return A status message indicating the result of the deletion.
      */
-    public String deleteRedBlackNode(int bookID, RedBlackNode head) {
+    public String deleteFromRedBlackTree(int bookID, RedBlackNode head) {
         RedBlackNode node = head;
 
         // Find the node to be deleted
@@ -419,16 +402,18 @@ public class RedBlackMethod {
 
         // At this point, "node" is the node to be deleted
 
-        // In this variable, we'll store the node at which we're going to start to fix
-        // the R-B
-        // properties after deleting a node.
-        
-        String returnStatusMessage = "Book "+node.getBook().getBookId() + " is no longer available.";
+        String returnStatusMessage = "Book " + node.getBook().getBookId() + " is no longer available.";
         String returnSecondHalfString = "";
         if (!node.getBook().getBookReservationQueue().waitListHeap.isEmpty()) {
             String waitingPatronID = "";
-            for (BookWaitList element : node.getBook().getBookReservationQueue().waitListHeap) {
-                waitingPatronID = waitingPatronID + element.getPatronId();
+            for (int i = 0; i < node.getBook().getBookReservationQueue().waitListHeap.size(); i++) {
+                if (i != node.getBook().getBookReservationQueue().waitListHeap.size() - 1) {
+                    waitingPatronID = waitingPatronID + " "
+                            + node.getBook().getBookReservationQueue().waitListHeap.get(i).getPatronId() + ",";
+                } else {
+                    waitingPatronID = waitingPatronID + " "
+                            + node.getBook().getBookReservationQueue().waitListHeap.get(i).getPatronId() + " ";
+                }
             }
             returnSecondHalfString = returnSecondHalfString + "Reservations made by Patrons " + waitingPatronID
                     + " have been cancelled!";
@@ -439,7 +424,7 @@ public class RedBlackMethod {
 
         // Node has zero or one child
         if (node.getLeftRedBlackNode() == null || node.getRightRedBlackNode() == null) {
-            movedUpNode = deleteNodeWithZeroOrOneChild(node);
+            movedUpNode = deleteRedBlackNodeWithZeroOrOneChild(node);
             deletedNodeColor = node.getRedBlackNodeColor();
         }
 
@@ -452,16 +437,16 @@ public class RedBlackMethod {
             node.setBook(inOrderSuccessor.getBook());
 
             // Delete inorder successor just as we would delete a node with 0 or 1 child
-            movedUpNode = deleteNodeWithZeroOrOneChild(inOrderSuccessor);
+            movedUpNode = deleteRedBlackNodeWithZeroOrOneChild(inOrderSuccessor);
             deletedNodeColor = inOrderSuccessor.getRedBlackNodeColor();
         }
 
         if (deletedNodeColor == LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE) {
-            fixRedBlackPropertiesAfterDelete(movedUpNode);
+            restoreRedBlackTreePropertiesAfterDelete(movedUpNode);
 
             // Remove the temporary NIL node
             if (movedUpNode.getClass() == NilNode.class) {
-                replaceParentsChild(movedUpNode.getParentRedBlackNode(), movedUpNode, null);
+                swapParentRedBlackNodesChild(movedUpNode.getParentRedBlackNode(), movedUpNode, null);
             }
         }
         return returnStatusMessage + returnSecondHalfString;
@@ -477,16 +462,16 @@ public class RedBlackMethod {
      * @return The node that has replaced the deleted node, or a temporary NIL node
      *         if the deleted node was black.
      */
-    private RedBlackNode deleteNodeWithZeroOrOneChild(RedBlackNode node) {
+    private RedBlackNode deleteRedBlackNodeWithZeroOrOneChild(RedBlackNode node) {
         // Node has ONLY a left child --> replace by its left child
         if (node.getLeftRedBlackNode() != null) {
-            replaceParentsChild(node.getParentRedBlackNode(), node, node.getLeftRedBlackNode());
+            swapParentRedBlackNodesChild(node.getParentRedBlackNode(), node, node.getLeftRedBlackNode());
             return node.getLeftRedBlackNode(); // moved-up node
         }
 
         // Node has ONLY a right child --> replace by its right child
         else if (node.getRightRedBlackNode() != null) {
-            replaceParentsChild(node.getParentRedBlackNode(), node, node.getRightRedBlackNode());
+            swapParentRedBlackNodesChild(node.getParentRedBlackNode(), node, node.getRightRedBlackNode());
             return node.getRightRedBlackNode(); // moved-up node
         }
 
@@ -498,7 +483,7 @@ public class RedBlackMethod {
             RedBlackNode newChild = node.getRedBlackNodeColor() == LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE
                     ? new NilNode()
                     : null;
-            replaceParentsChild(node.getParentRedBlackNode(), node, newChild);
+            swapParentRedBlackNodesChild(node.getParentRedBlackNode(), node, newChild);
             return newChild;
         }
     }
@@ -525,11 +510,10 @@ public class RedBlackMethod {
      * @param node The node at which to start fixing Red-Black Tree properties after
      *             deletion.
      */
-    private void fixRedBlackPropertiesAfterDelete(RedBlackNode node) {
+    private void restoreRedBlackTreePropertiesAfterDelete(RedBlackNode node) {
         // Case 1: Examined node is root, end of recursion
         if (node == headRedBlackNode) {
-            // Uncomment the following line if you want to enforce black roots (rule 2):
-            // node.color = BLACK;
+            node.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             return;
         }
 
@@ -537,33 +521,31 @@ public class RedBlackMethod {
 
         // Case 2: Red sibling
         if (sibling.getRedBlackNodeColor() == LibraryActionConstant.RED_BLACK_RED_COLOR_NODE) {
-            handleRedSibling(node, sibling);
+            processRedSibling(node, sibling);
             sibling = getRedBlackNodeSibling(node); // Get new sibling for fall-through to cases 3-6
         }
 
         // Cases 3+4: Black sibling with two black children
         if (isColorOfRedBlackNodeBlack(sibling.getLeftRedBlackNode())
                 && isColorOfRedBlackNodeBlack(sibling.getRightRedBlackNode())) {
-            // sibling.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
 
             // Case 3: Black sibling with two black children + red parent
 
             if (node.getParentRedBlackNode().getRedBlackNodeColor() == LibraryActionConstant.RED_BLACK_RED_COLOR_NODE) {
-                // node.getParentRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
                 redBlackTreeColourFilpTracker(node.getParentRedBlackNode(),
                         LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             }
 
             // Case 4: Black sibling with two black children + black parent
             else {
-                fixRedBlackPropertiesAfterDelete(node.getParentRedBlackNode());
+                restoreRedBlackTreePropertiesAfterDelete(node.getParentRedBlackNode());
             }
         }
 
         // Case 5+6: Black sibling with at least one red child
         else {
-            handleBlackSiblingWithAtLeastOneRedChild(node, sibling);
+            processBlackSiblingWithAtLeastOneRedChild(node, sibling);
         }
     }
 
@@ -575,13 +557,11 @@ public class RedBlackMethod {
      * @param node    The deleted node.
      * @param sibling The sibling of the deleted node.
      */
-    private void handleRedSibling(RedBlackNode node, RedBlackNode sibling) {
-        // Recolor...
-        // sibling.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
+    private void processRedSibling(RedBlackNode node, RedBlackNode sibling) {
+        // Recolor
         redBlackTreeColourFilpTracker(sibling, LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
-        // node.getParentRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
         redBlackTreeColourFilpTracker(node.getParentRedBlackNode(), LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
-        // ... and rotate
+        // .Rotate
         if (node == node.getParentRedBlackNode().getLeftRedBlackNode()) {
             rotateRedBlackTreeToLeft(node.getParentRedBlackNode());
         } else {
@@ -598,24 +578,20 @@ public class RedBlackMethod {
      * @param node    The deleted node.
      * @param sibling The sibling of the deleted node.
      */
-    private void handleBlackSiblingWithAtLeastOneRedChild(RedBlackNode node, RedBlackNode sibling) {
+    private void processBlackSiblingWithAtLeastOneRedChild(RedBlackNode node, RedBlackNode sibling) {
         boolean nodeIsLeftChild = node == node.getParentRedBlackNode().getLeftRedBlackNode();
 
         // Case 5: Black sibling with at least one red child + "outer nephew" is black
         // --> Recolor sibling and its child, and rotate around sibling
         if (nodeIsLeftChild && isColorOfRedBlackNodeBlack(sibling.getRightRedBlackNode())) {
-            // sibling.getLeftRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling.getLeftRedBlackNode(),
                     LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
-            // sibling.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             rotateRedBlackTeeToRight(sibling);
             sibling = node.getParentRedBlackNode().getRightRedBlackNode();
         } else if (!nodeIsLeftChild && isColorOfRedBlackNodeBlack(sibling.getLeftRedBlackNode())) {
-            // sibling.getRightRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling.getRightRedBlackNode(),
                     LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
-            // sibling.setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling, LibraryActionConstant.RED_BLACK_RED_COLOR_NODE);
             rotateRedBlackTreeToLeft(sibling);
             sibling = node.getParentRedBlackNode().getLeftRedBlackNode();
@@ -625,17 +601,13 @@ public class RedBlackMethod {
 
         // Case 6: Black sibling with at least one red child + "outer nephew" is red
         // --> Recolor sibling + parent + sibling's child, and rotate around parent
-        // sibling.setRedBlackNodeColor(node.getParentRedBlackNode().getRedBlackNodeColor());
         redBlackTreeColourFilpTracker(sibling, node.getParentRedBlackNode().getRedBlackNodeColor());
-        // node.getParentRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
         redBlackTreeColourFilpTracker(node.getParentRedBlackNode(), LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
         if (nodeIsLeftChild) {
-            // sibling.getRightRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling,
                     LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             rotateRedBlackTreeToLeft(node.getParentRedBlackNode());
         } else {
-            // sibling.getLeftRedBlackNode().setRedBlackNodeColor(LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             redBlackTreeColourFilpTracker(sibling,
                     LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE);
             rotateRedBlackTeeToRight(node.getParentRedBlackNode());
@@ -685,7 +657,8 @@ public class RedBlackMethod {
      */
     public ArrayList<BookNode> serachTheRedBlackTreeInRange(int startBookID, int endBookID, RedBlackNode head,
             ArrayList<BookNode> books) {
-        // Base case: if the current node is null, or the book with the specified bookId
+        // Base condition: if the current node is null, or the book with the specified
+        // bookId
         // is found
 
         if (head == null) {
@@ -709,7 +682,7 @@ public class RedBlackMethod {
      * @param newRedBlackNodeColor The new color to set for the node.
      */
     public void redBlackTreeColourFilpTracker(RedBlackNode currNode, String newRedBlackNodeColor) {
-        if (currNode.getRedBlackNodeColor() != newRedBlackNodeColor) {
+        if (currNode.getRedBlackNodeColor() != newRedBlackNodeColor && currNode.getParentRedBlackNode() != null) {
             colorFlipCount++;
         }
         currNode.setRedBlackNodeColor(newRedBlackNodeColor);

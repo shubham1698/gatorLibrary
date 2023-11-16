@@ -13,7 +13,7 @@ class NilNode extends RedBlackNode {
    * The node color is set to black, as specified by Red-Black Tree conventions.
    */
   NilNode() {
-    super(null);
+    super(new BookNode(-1, null, null, false));
     this.nodeColor = LibraryActionConstant.RED_BLACK_BLACK_COLOR_NODE;
   }
 }

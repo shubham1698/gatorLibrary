@@ -35,10 +35,13 @@ public class GatorLibServices {
      */
     public void performInsertBookAction(BookNode newBookNode) {
         // Implementation for printing book action
-
-        RedBlackNode newBookRBNode = new RedBlackNode(newBookNode);
-        rb.insertInRedBlackTree(newBookRBNode, rb.getHeadRedBlackNode());
-        return;
+        try {
+            RedBlackNode newBookRBNode = new RedBlackNode(newBookNode);
+                        rb.insertInRedBlackTree(newBookRBNode, rb.getHeadRedBlackNode());
+            return;
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     /**
@@ -50,23 +53,29 @@ public class GatorLibServices {
     public void performPrintBookAction(int bookIdToSearch) {
         // Implementation for search book action
         try {
-            BookNode bookDetails = rb.searchWithInRedBlackTree(rb.getHeadRedBlackNode(), bookIdToSearch).getBook();
-
-            writer.write("BookID = " + bookDetails.getBookId() + "\n");
-            writer.write("Title = " + bookDetails.getBookName() + "\n");
-            writer.write("Author = " + bookDetails.getBookAuthorName() + "\n");
-            writer.write("Availability = " + (bookDetails.isBookAvailabilityStatus() ? "Yes" : "No") + "\n");
-            writer.write("BorrowedBy = "
-                    + (bookDetails.getBookBorrowedBy() != -1 ? bookDetails.getBookBorrowedBy() : "") + "\n");
-            ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue().getBookReservationList();
-            String reservation = "";
-            for (BookWaitList element : reservationList) {
-                reservation = reservation + " " + element.getPatronId() + ",";
+            RedBlackNode redBlackBookNode = rb.searchWithInRedBlackTree(rb.getHeadRedBlackNode(), bookIdToSearch);
+            if (redBlackBookNode != null) {
+                BookNode bookDetails = redBlackBookNode.getBook();
+                writer.write("BookID = " + bookDetails.getBookId() + "\n");
+                writer.write("Title = " + bookDetails.getBookName() + "\n");
+                writer.write("Author = " + bookDetails.getBookAuthorName() + "\n");
+                writer.write("Availability = " + (bookDetails.isBookAvailabilityStatus() ? "Yes" : "No") + "\n");
+                writer.write("BorrowedBy = "
+                        + (bookDetails.getBookBorrowedBy() != -1 ? bookDetails.getBookBorrowedBy() : "") + "\n");
+                ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
+                        .getBookReservationList();
+                String reservation = "";
+                for (BookWaitList element : reservationList) {
+                    reservation = reservation + " " + element.getPatronId() + ",";
+                }
+                writer.write("Reservations = [" + reservation + "]\n");
+                writer.write("\n");
+            } else {
+                writer.write("Book " + bookIdToSearch + " not found in the library\n");
+                writer.write("\n");
             }
-            writer.write("Reservations = [" + reservation + "]\n");
-            writer.write("\n");
 
-        } catch (IOException e) {
+        } catch (Exception e) {
 
         }
 
@@ -84,13 +93,13 @@ public class GatorLibServices {
     public void performBorrowBookAction(int patronID, int bookID, int priorityNumber) {
         // Implementation for borrowing book action
         try {
-
+            
             writer.write(
                     rb.checkForBorrowInRedBlackTree(rb.getHeadRedBlackNode(), bookID, patronID, priorityNumber) + "\n");
             writer.write("\n");
-        } catch (Exception e) {
+                    } catch (Exception e) {
             // TODO: handle exception
-        }
+                    }
 
     }
 

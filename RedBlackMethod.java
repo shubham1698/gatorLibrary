@@ -60,7 +60,7 @@ public class RedBlackMethod {
         // is found
         if (head == null || head.getBook().getBookId() == bookId) {
             String status = "";
-            System.out.println("PatronID-->" + patronID + " " + head.getBook().isBookAvailabilityStatus());
+
             if (head.getBook().isBookAvailabilityStatus()) {
                 // Book is available, perform borrow operation
                 head.getBook().setBookAvailabilityStatus(false);
@@ -153,8 +153,7 @@ public class RedBlackMethod {
     public void insertInRedBlackTree(RedBlackNode newBookNode, RedBlackNode head) {
         try {
             RedBlackNode parent = null;
-            System.out.println(newBookNode.getBook().toString());
-            //System.out.println(head.getBook().toString());
+
             // Traverse the tree to the left or right depending on the key
             while (head != null) {
                 parent = head;
@@ -181,7 +180,7 @@ public class RedBlackMethod {
             
             fixRedBlackNodePropertiesAfterInsert(newBookNode);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+
         }
     }
 

@@ -15,4 +15,5 @@ public class LibraryActionConstant {
     static final String QUIT = "Quit";
     static final String RED_BLACK_RED_COLOR_NODE = "RED";
     static final String RED_BLACK_BLACK_COLOR_NODE = "BLACK";
+    static final int PRORITY_MAX_HEAP_SIZE = 20;
 }

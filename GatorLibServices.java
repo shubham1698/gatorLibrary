@@ -168,7 +168,7 @@ public class GatorLibServices {
                 writer.write("Author = " + bookDetails.getBookAuthorName() + "\n");
                 writer.write("Availability = " + (bookDetails.isBookAvailabilityStatus() ? "Yes" : "No") + "\n");
                 writer.write("BorrowedBy = "
-                        + (bookDetails.getBookBorrowedBy() != -1 ? bookDetails.getBookBorrowedBy() : "") + "\n");
+                        + (bookDetails.getBookBorrowedBy() != -1 ? bookDetails.getBookBorrowedBy() : "None") + "\n");
                 ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
                         .getBookReservationList();
                 String reservation = "";
@@ -236,7 +236,7 @@ public class GatorLibServices {
                         "Availability = " + (bookDetails.isBookAvailabilityStatus() ? "Yes" : "No") + "\n");
                 writer.write("BorrowedBy = "
                         + (bookDetails.getBookBorrowedBy() != -1 ? bookDetails.getBookBorrowedBy()
-                                : "")
+                                : "None")
                         + "\n");
                 ArrayList<BookWaitList> reservationList = bookDetails.getBookReservationQueue()
                         .getBookReservationList();

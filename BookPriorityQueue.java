@@ -12,27 +12,28 @@ public class BookPriorityQueue {
      *                      priority queue.
      */
     public void insertPatronToWaitQueue(BookWaitList patronDetails) {
+        if (waitListHeap.size() < LibraryActionConstant.PRORITY_MAX_HEAP_SIZE) {
+            waitListHeap.add(patronDetails);
+            int index = waitListHeap.size() - 1;
+            int parentIndex = (index - 1) / 2;
+            while (index != 0) {
 
-        waitListHeap.add(patronDetails);
-        int index = waitListHeap.size() - 1;
-        int parentIndex = (index - 1) / 2;
-        while (index != 0) {
-
-            if (waitListHeap.get(parentIndex).getPriorityNumber() > waitListHeap.get(index).getPriorityNumber()) {
-                heapifyTree(parentIndex, index);
-                index = parentIndex;
-            } else if (waitListHeap.get(parentIndex).getPriorityNumber() == waitListHeap.get(index)
-                    .getPriorityNumber()) {
-
-                if (waitListHeap.get(parentIndex).getTimeOfReservation()
-                        .isBefore(waitListHeap.get(index).getTimeOfReservation())) {
+                if (waitListHeap.get(parentIndex).getPriorityNumber() > waitListHeap.get(index).getPriorityNumber()) {
                     heapifyTree(parentIndex, index);
                     index = parentIndex;
+                } else if (waitListHeap.get(parentIndex).getPriorityNumber() == waitListHeap.get(index)
+                        .getPriorityNumber()) {
+
+                    if (waitListHeap.get(parentIndex).getTimeOfReservation()
+                            .isBefore(waitListHeap.get(index).getTimeOfReservation())) {
+                        heapifyTree(parentIndex, index);
+                        index = parentIndex;
+                    } else {
+                        break;
+                    }
                 } else {
                     break;
                 }
-            } else {
-                break;
             }
         }
     }

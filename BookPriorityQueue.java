@@ -47,7 +47,7 @@ public class BookPriorityQueue {
     private void heapifyTree(int parentIndex, int index) {
         BookWaitList tempNode = waitListHeap.get(parentIndex);
         waitListHeap.set(parentIndex, waitListHeap.get(index));
-        waitListHeap.set(parentIndex, tempNode);
+        waitListHeap.set(index, tempNode);
     }
 
     /**

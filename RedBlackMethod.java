@@ -415,7 +415,10 @@ public class RedBlackMethod {
                             + node.getBook().getBookReservationQueue().waitListHeap.get(i).getPatronId() + " ";
                 }
             }
-            returnSecondHalfString = returnSecondHalfString + "Reservations made by Patrons " + waitingPatronID
+            returnSecondHalfString = returnSecondHalfString
+                    + (node.getBook().getBookReservationQueue().waitListHeap.size() > 1 ? "Reservations made by Patrons"
+                            : "Reservation made by Patron")
+                    + waitingPatronID
                     + " have been cancelled!";
         }
 
